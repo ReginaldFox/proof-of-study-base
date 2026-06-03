@@ -19,7 +19,7 @@ export const wagmiConfig = createConfig({
     })
   ],
   multiInjectedProviderDiscovery: true,
-  ssr: true,
+  ssr: false,
   transports: {
     [base.id]: http(),
     [baseSepolia.id]: http()
