@@ -9,3 +9,5 @@ coverage
 typechain-types
 *.tsbuildinfo
 next-dev*.log
+
+.vercel
