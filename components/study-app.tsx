@@ -83,6 +83,7 @@ function normalizeError(error?: Error | null) {
   if (!error) return '';
   if (error instanceof BaseError) {
     const shortMessage = error.shortMessage.toLowerCase();
+    if (shortMessage.includes('provider not found')) return 'This wallet is not available in the current browser.';
     if (shortMessage.includes('user rejected')) return 'Transaction rejected.';
     if (shortMessage.includes('already checked in')) return 'This wallet already checked in today.';
     return error.shortMessage;
@@ -317,6 +318,8 @@ export function StudyApp() {
     if (typeof window === 'undefined') return;
     if (window.localStorage.getItem(baseAutoConnectDismissedKey) === 'true') return;
 
+    if (!window.ethereum) return;
+
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isBaseApp = userAgent.includes('base');
     if (!isBaseApp) return;
@@ -405,6 +408,14 @@ export function StudyApp() {
     return current < BigInt(reward.target);
   });
 
+  const isPrimaryDisabled =
+    isConnected &&
+    (Boolean(hasCheckedInToday) ||
+      !hasContract ||
+      isWritePending ||
+      isConfirming ||
+      isSwitchingNetwork);
+
   return (
     <main className="min-h-screen bg-[#fff8ef] text-ink">
       <WalletDialog isOpen={isWalletOpen} onClose={() => setIsWalletOpen(false)} />
@@ -426,7 +437,7 @@ export function StudyApp() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <button
                 className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 font-semibold text-white shadow-soft transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-stone-300"
-                disabled={Boolean(hasCheckedInToday) || isWritePending || isConfirming || isSwitchingNetwork}
+                disabled={isPrimaryDisabled}
                 onClick={handlePrimaryAction}
               >
                 {isWritePending || isConfirming || isSwitchingNetwork ? (

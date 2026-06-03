@@ -12,8 +12,6 @@ export const baseBuilderDataSuffix = '' as Hex;
 export const wagmiConfig = createConfig({
   chains: [base, baseSepolia],
   connectors: [
-    injected({ target: 'metaMask' }),
-    injected({ target: 'okxWallet' }),
     injected(),
     coinbaseWallet({
       appName: 'ProofOfStudy',
