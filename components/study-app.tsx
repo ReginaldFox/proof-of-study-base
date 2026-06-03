@@ -17,8 +17,9 @@ import {
   X
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { type Address, BaseError, formatUnits, isAddress, zeroAddress } from 'viem';
+import { type Address, BaseError, type EIP1193Provider, formatUnits, isAddress, zeroAddress } from 'viem';
 import {
+  type Connector,
   useAccount,
   useChainId,
   useConnect,
@@ -29,7 +30,8 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract
 } from 'wagmi';
-import { baseBuilderDataSuffix, activeChain } from '@/lib/wagmi';
+import { injected } from 'wagmi/connectors';
+import { baseBuilderDataSuffix, activeChain, wagmiConfig } from '@/lib/wagmi';
 import { contractAddress, proofOfStudyAbi } from '@/lib/contract';
 
 type StudyProfile = {
@@ -44,6 +46,20 @@ type RecentCheckIn = {
   day: bigint;
   totalCheckIns: bigint;
   currentStreak: bigint;
+};
+
+type BrowserProvider = EIP1193Provider & {
+  isBraveWallet?: true;
+  isCoinbaseWallet?: true;
+  isMetaMask?: true;
+  isOkxWallet?: true;
+  isOKExWallet?: true;
+  isRabby?: true;
+  providers?: BrowserProvider[];
+};
+
+type BrowserWindow = Window & {
+  ethereum?: BrowserProvider;
 };
 
 const hasContract = contractAddress !== zeroAddress;
@@ -100,6 +116,57 @@ function connectorLabel(name: string) {
   return name;
 }
 
+function isCoinbaseConnector(connector: Connector) {
+  return connector.name.toLowerCase().includes('coinbase');
+}
+
+function isGenericInjectedConnector(connector: Connector) {
+  const name = connector.name.toLowerCase();
+  return connector.id === 'injected' || name.includes('browser') || name.includes('injected');
+}
+
+function legacyProviderName(provider: BrowserProvider, index: number) {
+  if (provider.isCoinbaseWallet) return 'Coinbase Wallet Extension';
+  if (provider.isOkxWallet || provider.isOKExWallet) return 'OKX Wallet';
+  if (provider.isRabby) return 'Rabby Wallet';
+  if (provider.isBraveWallet) return 'Brave Wallet';
+  if (provider.isMetaMask) return 'MetaMask';
+  return index === 0 ? 'Browser Wallet' : `Browser Wallet ${index + 1}`;
+}
+
+function getLegacyBrowserConnectors(existingLabels: Set<string>) {
+  if (typeof window === 'undefined') return [];
+
+  const ethereum = (window as BrowserWindow).ethereum;
+  const providers: BrowserProvider[] = ethereum?.providers?.length ? ethereum.providers : ethereum ? [ethereum] : [];
+  const seenProviders = new Set<BrowserProvider>();
+  const legacyConnectors: Connector[] = [];
+
+  providers.forEach((provider, index) => {
+    if (seenProviders.has(provider)) return;
+    seenProviders.add(provider);
+
+    const name = legacyProviderName(provider, index);
+    const label = connectorLabel(name);
+    if (existingLabels.has(label)) return;
+    existingLabels.add(label);
+
+    legacyConnectors.push(
+      wagmiConfig._internal.connectors.setup(
+        injected({
+          target: {
+            id: `legacy-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+            name,
+            provider
+          }
+        })
+      )
+    );
+  });
+
+  return legacyConnectors;
+}
+
 function StatCard({
   label,
   value,
@@ -145,16 +212,38 @@ function WalletDialog({
   const { connectors, connect, isPending, error, variables } = useConnect();
   const { isConnected } = useAccount();
   const { disconnect } = useDisconnect();
+  const [walletView, setWalletView] = useState<'main' | 'browser'>('main');
 
   if (!isOpen) return null;
 
-  const seen = new Set<string>();
-  const walletOptions = connectors.filter((connector) => {
+  const seenMainLabels = new Set<string>();
+  const coinbaseOptions = connectors.filter((connector) => {
     const label = connectorLabel(connector.name);
-    if (seen.has(label)) return false;
-    seen.add(label);
+    if (!isCoinbaseConnector(connector) || seenMainLabels.has(label)) return false;
+    seenMainLabels.add(label);
     return true;
   });
+  const genericInjectedConnector = connectors.find(isGenericInjectedConnector);
+  const browserLabels = new Set<string>();
+  const browserWalletOptions = [
+    ...connectors.filter((connector) => {
+      if (isCoinbaseConnector(connector) || isGenericInjectedConnector(connector)) return false;
+      const label = connectorLabel(connector.name);
+      if (browserLabels.has(label)) return false;
+      browserLabels.add(label);
+      return true;
+    }),
+    ...getLegacyBrowserConnectors(browserLabels)
+  ];
+
+  if (browserWalletOptions.length === 0 && genericInjectedConnector) {
+    browserWalletOptions.push(genericInjectedConnector);
+  }
+
+  function handleConnect(connector: Connector) {
+    window.localStorage.removeItem(baseAutoConnectDismissedKey);
+    connect({ connector }, { onSuccess: onClose });
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-end bg-black/35 px-4 pb-4 sm:items-center sm:justify-center sm:p-6">
@@ -162,36 +251,79 @@ function WalletDialog({
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-sm font-medium text-orange-600">Wallet</p>
-            <h2 className="mt-1 text-xl font-semibold text-ink">Choose a wallet</h2>
+            <h2 className="mt-1 text-xl font-semibold text-ink">
+              {walletView === 'main' ? 'Choose a wallet' : 'Choose a browser wallet'}
+            </h2>
           </div>
           <button
             aria-label="Close wallet dialog"
             className="grid h-10 w-10 place-items-center rounded-lg border border-stone-200 text-stone-600"
-            onClick={onClose}
+            onClick={() => {
+              setWalletView('main');
+              onClose();
+            }}
           >
             <X size={18} />
           </button>
         </div>
 
         <div className="mt-5 space-y-3">
-          {walletOptions.map((connector) => (
-            <button
-              className="flex min-h-14 w-full items-center justify-between gap-3 rounded-lg border border-stone-200 px-4 text-left font-semibold text-ink transition hover:border-orange-300 hover:bg-orange-50 disabled:opacity-60"
-              disabled={isPending}
-              key={connector.uid}
-              onClick={() => {
-                window.localStorage.removeItem(baseAutoConnectDismissedKey);
-                connect({ connector }, { onSuccess: onClose });
-              }}
-            >
-              <span>{connectorLabel(connector.name)}</span>
-              {isPending && variables?.connector?.name === connector.name ? (
-                <Loader2 className="animate-spin text-orange-600" size={18} />
-              ) : (
+          {walletView === 'main' ? (
+            <>
+              {coinbaseOptions.map((connector) => (
+                <button
+                  className="flex min-h-14 w-full items-center justify-between gap-3 rounded-lg border border-stone-200 px-4 text-left font-semibold text-ink transition hover:border-orange-300 hover:bg-orange-50 disabled:opacity-60"
+                  disabled={isPending}
+                  key={connector.uid}
+                  onClick={() => handleConnect(connector)}
+                >
+                  <span>{connectorLabel(connector.name)}</span>
+                  {isPending && variables?.connector?.name === connector.name ? (
+                    <Loader2 className="animate-spin text-orange-600" size={18} />
+                  ) : (
+                    <Wallet className="text-orange-600" size={18} />
+                  )}
+                </button>
+              ))}
+              <button
+                className="flex min-h-14 w-full items-center justify-between gap-3 rounded-lg border border-stone-200 px-4 text-left font-semibold text-ink transition hover:border-orange-300 hover:bg-orange-50 disabled:opacity-60"
+                disabled={isPending}
+                onClick={() => setWalletView('browser')}
+              >
+                <span>Browser Wallet</span>
                 <Wallet className="text-orange-600" size={18} />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-stone-100 px-4 font-semibold text-stone-700"
+                onClick={() => setWalletView('main')}
+              >
+                Back
+              </button>
+              {browserWalletOptions.map((connector) => (
+                <button
+                  className="flex min-h-14 w-full items-center justify-between gap-3 rounded-lg border border-stone-200 px-4 text-left font-semibold text-ink transition hover:border-orange-300 hover:bg-orange-50 disabled:opacity-60"
+                  disabled={isPending}
+                  key={connector.uid}
+                  onClick={() => handleConnect(connector)}
+                >
+                  <span>{connectorLabel(connector.name)}</span>
+                  {isPending && variables?.connector?.name === connector.name ? (
+                    <Loader2 className="animate-spin text-orange-600" size={18} />
+                  ) : (
+                    <Wallet className="text-orange-600" size={18} />
+                  )}
+                </button>
+              ))}
+              {browserWalletOptions.length === 0 && (
+                <p className="rounded-lg bg-orange-50 p-3 text-sm text-stone-600">
+                  No browser wallet extension was detected.
+                </p>
               )}
-            </button>
-          ))}
+            </>
+          )}
         </div>
 
         {isConnected && (
@@ -200,6 +332,7 @@ function WalletDialog({
             onClick={() => {
               window.localStorage.setItem(baseAutoConnectDismissedKey, 'true');
               disconnect();
+              setWalletView('main');
               onClose();
             }}
           >
