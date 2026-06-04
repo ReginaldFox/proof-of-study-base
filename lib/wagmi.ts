@@ -7,7 +7,9 @@ import type { Hex } from 'viem';
 const configuredChainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID || baseSepolia.id);
 
 export const activeChain = configuredChainId === base.id ? base : baseSepolia;
-export const baseBuilderDataSuffix = '' as Hex;
+export const baseBuilderCode = 'bc_28t25gk8';
+export const baseBuilderDataSuffix =
+  '0x62635f3238743235676b380b0080218021802180218021802180218021' as Hex;
 
 export const wagmiConfig = createConfig({
   chains: [base, baseSepolia],
@@ -24,7 +26,7 @@ export const wagmiConfig = createConfig({
     [base.id]: http(),
     [baseSepolia.id]: http()
   },
-  dataSuffix: baseBuilderDataSuffix || undefined
+  dataSuffix: baseBuilderDataSuffix
 });
 
 export const queryClient = new QueryClient();
