@@ -263,9 +263,13 @@ function WalletDialog({
     <div
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-end bg-black/35 px-4 pb-4 sm:items-center sm:justify-center sm:p-6"
+      onClick={() => {
+        setWalletView('main');
+        onClose();
+      }}
       role="dialog"
     >
-      <div className="w-full max-w-md rounded-lg bg-white p-5 shadow-soft">
+      <div className="w-full max-w-md rounded-lg bg-white p-5 shadow-soft" onClick={(event) => event.stopPropagation()}>
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-sm font-medium text-orange-600">Wallet</p>
