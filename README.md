@@ -11,8 +11,8 @@ ProofOfStudy is a learning check-in, onchain learning proof, and education produ
 - No WalletConnect project ID and no RainbowKit.
 - One daily onchain study check-in per wallet.
 - Personal reward stats, wallet lookup, achievement track, and recent activity.
-- Base offchain attribution meta tag placeholder in `app/layout.tsx`.
-- ERC-8021 onchain attribution data suffix placeholder in `lib/wagmi.ts` and the `writeContract` call.
+- Base offchain attribution meta tag in `app/layout.tsx`.
+- ERC-8021 onchain attribution data suffix in `lib/wagmi.ts` and the `writeContract` call.
 
 ## Tech Stack
 
@@ -40,7 +40,9 @@ For base.dev attribution:
 - Put the verified app token directly in `app/layout.tsx`:
   `<meta name="base:app_id" content="..." />`
 - Put the builder code data suffix in `lib/wagmi.ts`:
-  `export const baseBuilderDataSuffix = '0x...' as Hex;`
+  `export const baseBuilderDataSuffix = '0x62635f3238743235676b380b0080218021802180218021802180218021' as Hex;`
+
+Current builder code: `bc_28t25gk8`.
 
 ## Run Locally
 
