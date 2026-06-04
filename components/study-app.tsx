@@ -801,7 +801,7 @@ export function StudyApp() {
                 ))
               ) : (
                 <p className="text-stone-500">
-                  {eventError || 'No recent rewards found for the current contract.'}
+                  {eventError || 'No recent rewards found yet. New check-ins will appear here after confirmation.'}
                 </p>
               )}
             </div>
