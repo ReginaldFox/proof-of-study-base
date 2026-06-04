@@ -214,6 +214,16 @@ function ProfileStats({ profile }: { profile: StudyProfile }) {
   );
 }
 
+function RewardProgress({ current, target }: { current: bigint; target: number }) {
+  const percentage = Math.min(100, Math.round((Number(current) / target) * 100));
+
+  return (
+    <div className="mt-3 h-2 overflow-hidden rounded-full bg-white">
+      <div className="h-full rounded-full bg-orange-500" style={{ width: `${percentage}%` }} />
+    </div>
+  );
+}
+
 function WalletDialog({
   isOpen,
   onClose
@@ -752,6 +762,7 @@ export function StudyApp() {
                       <div>
                         <p className="font-semibold">{reward.name}</p>
                         <p className="mt-1 text-sm text-stone-500">{reward.note}</p>
+                        <RewardProgress current={current} target={reward.target} />
                       </div>
                       <span className="rounded-lg bg-white px-3 py-1 text-sm font-semibold">
                         {unlocked ? 'Unlocked' : `${reward.target}`}
