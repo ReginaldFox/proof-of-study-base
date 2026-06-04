@@ -31,7 +31,7 @@ import {
   useWriteContract
 } from 'wagmi';
 import { injected } from 'wagmi/connectors';
-import { baseBuilderDataSuffix, activeChain, wagmiConfig } from '@/lib/wagmi';
+import { baseBuilderCode, baseBuilderDataSuffix, activeChain, wagmiConfig } from '@/lib/wagmi';
 import { contractAddress, proofOfStudyAbi } from '@/lib/contract';
 
 type StudyProfile = {
@@ -619,6 +619,10 @@ export function StudyApp() {
                 <p className="mt-2 text-sm font-semibold">
                   {nextReward ? nextReward.name : 'All rewards unlocked'}
                 </p>
+              </div>
+              <div className="col-span-2 rounded-lg bg-[#fff8ef] p-4">
+                <p className="text-sm text-stone-500">Builder attribution</p>
+                <p className="mt-2 text-sm font-semibold">{baseBuilderCode}</p>
               </div>
             </div>
             {transactionHash && (
