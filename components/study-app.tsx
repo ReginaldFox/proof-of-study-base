@@ -95,6 +95,10 @@ function formatDay(day: bigint) {
   }).format(date);
 }
 
+function transactionUrl(hash: string) {
+  return `https://basescan.org/tx/${hash}`;
+}
+
 function normalizeError(error?: Error | null) {
   if (!error) return '';
   if (error instanceof BaseError) {
@@ -650,7 +654,12 @@ export function StudyApp() {
               </div>
             </div>
             {transactionHash && (
-              <p className="mt-4 break-all text-sm text-stone-500">Transaction: {transactionHash}</p>
+              <p className="mt-4 break-all text-sm text-stone-500">
+                Transaction:{' '}
+                <a className="font-semibold text-orange-700 underline" href={transactionUrl(transactionHash)} rel="noreferrer" target="_blank">
+                  {transactionHash}
+                </a>
+              </p>
             )}
             {isConfirmed && (
               <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-green-700">
