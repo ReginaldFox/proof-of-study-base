@@ -17,7 +17,7 @@ export const wagmiConfig = createConfig({
     injected(),
     coinbaseWallet({
       appName: 'ProofOfStudy',
-      preference: 'all'
+      preference: 'eoaOnly'
     })
   ],
   multiInjectedProviderDiscovery: true,

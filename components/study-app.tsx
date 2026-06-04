@@ -406,6 +406,8 @@ export function StudyApp() {
   const { connectors, connect } = useConnect();
   const { switchChain, isPending: isSwitchingNetwork } = useSwitchChain();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
+  const [gasError, setGasError] = useState('');
+  const [isEstimatingGas, setIsEstimatingGas] = useState(false);
   const [lookupAddress, setLookupAddress] = useState('');
   const [submittedLookup, setSubmittedLookup] = useState<Address | null>(null);
   const [recentCheckIns, setRecentCheckIns] = useState<RecentCheckIn[]>([]);
@@ -488,15 +490,16 @@ export function StudyApp() {
 
   const myProfile = (myProfileData as StudyProfile | undefined) || emptyProfile;
   const lookupProfile = (lookupProfileData as StudyProfile | undefined) || emptyProfile;
-  const txError = normalizeError(writeError || receiptError);
+  const txError = gasError || normalizeError(writeError || receiptError);
 
   const checkInButtonLabel = useMemo(() => {
     if (!isConnected) return 'Connect Wallet';
     if (isWrongNetwork) return `Switch to ${activeChain.name}`;
     if (hasCheckedInToday) return 'Reward Claimed Today';
+    if (isEstimatingGas) return 'Preparing Reward...';
     if (isWritePending || isConfirming) return 'Claiming Reward...';
     return 'Claim Today\'s Reward';
-  }, [hasCheckedInToday, isConnected, isConfirming, isWritePending, isWrongNetwork]);
+  }, [hasCheckedInToday, isConnected, isConfirming, isEstimatingGas, isWritePending, isWrongNetwork]);
 
   useEffect(() => {
     if (isConnected) return;
@@ -558,7 +561,7 @@ export function StudyApp() {
     loadEvents();
   }, [publicClient, isWrongNetwork, isConfirmed]);
 
-  function handlePrimaryAction() {
+  async function handlePrimaryAction() {
     if (!isConnected) {
       setIsWalletOpen(true);
       return;
@@ -568,13 +571,32 @@ export function StudyApp() {
       return;
     }
     if (!hasContract || hasCheckedInToday) return;
+    if (!address || !publicClient) return;
 
-    writeContract({
-      address: contractAddress,
-      abi: proofOfStudyAbi,
-      functionName: 'checkIn',
-      dataSuffix: baseBuilderDataSuffix
-    });
+    setGasError('');
+    setIsEstimatingGas(true);
+
+    try {
+      const estimatedGas = await publicClient.estimateContractGas({
+        account: address,
+        address: contractAddress,
+        abi: proofOfStudyAbi,
+        functionName: 'checkIn',
+        dataSuffix: baseBuilderDataSuffix
+      });
+
+      writeContract({
+        address: contractAddress,
+        abi: proofOfStudyAbi,
+        functionName: 'checkIn',
+        dataSuffix: baseBuilderDataSuffix,
+        gas: estimatedGas + estimatedGas / 5n
+      });
+    } catch (error) {
+      setGasError(normalizeError(error instanceof Error ? error : new Error('Unable to prepare this transaction.')));
+    } finally {
+      setIsEstimatingGas(false);
+    }
   }
 
   function handleLookup(event: React.FormEvent<HTMLFormElement>) {
@@ -597,6 +619,7 @@ export function StudyApp() {
     isConnected &&
     (Boolean(hasCheckedInToday) ||
       !hasContract ||
+      isEstimatingGas ||
       isWritePending ||
       isConfirming ||
       isSwitchingNetwork);
