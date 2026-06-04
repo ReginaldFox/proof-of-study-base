@@ -57,6 +57,18 @@ npm run dev
 npm run build
 ```
 
+## Additional Docs
+
+- `docs/attribution.md`
+- `docs/wallets.md`
+- `docs/deployment.md`
+- `docs/qa-checklist.md`
+- `docs/mobile.md`
+- `docs/base-app.md`
+- `docs/security.md`
+- `docs/contract.md`
+- `docs/product.md`
+
 ## Deploy Contract
 
 Set deployment variables:
