@@ -218,7 +218,7 @@ function RewardProgress({ current, target }: { current: bigint; target: number }
   const percentage = Math.min(100, Math.round((Number(current) / target) * 100));
 
   return (
-    <div className="mt-3 h-2 overflow-hidden rounded-full bg-white">
+    <div aria-label={`${percentage}% complete`} className="mt-3 h-2 overflow-hidden rounded-full bg-white" role="progressbar">
       <div className="h-full rounded-full bg-orange-500" style={{ width: `${percentage}%` }} />
     </div>
   );
