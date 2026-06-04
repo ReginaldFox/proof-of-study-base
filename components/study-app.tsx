@@ -815,6 +815,7 @@ export function StudyApp() {
           </div>
           <form className="mt-4 flex flex-col gap-3 sm:flex-row" onSubmit={handleLookup}>
             <input
+              aria-label="Wallet address"
               className="min-h-12 flex-1 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
               placeholder="Enter a wallet address"
               value={lookupAddress}
