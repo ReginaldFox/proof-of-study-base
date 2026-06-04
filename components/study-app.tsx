@@ -573,6 +573,7 @@ export function StudyApp() {
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <button
+                aria-label={checkInButtonLabel}
                 className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 font-semibold text-white shadow-soft transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-stone-300"
                 disabled={isPrimaryDisabled}
                 onClick={handlePrimaryAction}
