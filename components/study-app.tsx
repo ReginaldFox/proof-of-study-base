@@ -103,6 +103,10 @@ function contractUrl(address: Address) {
   return `https://basescan.org/address/${address}`;
 }
 
+function currentUtcDay() {
+  return Math.floor(Date.now() / 86_400_000).toString();
+}
+
 function normalizeError(error?: Error | null) {
   if (!error) return '';
   if (error instanceof BaseError) {
@@ -661,6 +665,10 @@ export function StudyApp() {
                 <a className="mt-2 block break-all text-sm font-semibold text-orange-700 underline" href={contractUrl(contractAddress)} rel="noreferrer" target="_blank">
                   {formatAddress(contractAddress)}
                 </a>
+              </div>
+              <div className="col-span-2 rounded-lg bg-[#fff8ef] p-4">
+                <p className="text-sm text-stone-500">UTC reward day</p>
+                <p className="mt-2 text-sm font-semibold">{currentUtcDay()}</p>
               </div>
             </div>
             {transactionHash && (
