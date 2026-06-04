@@ -214,6 +214,20 @@ function WalletDialog({
   const { disconnect } = useDisconnect();
   const [walletView, setWalletView] = useState<'main' | 'browser'>('main');
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setWalletView('main');
+        onClose();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const seenMainLabels = new Set<string>();
