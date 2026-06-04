@@ -246,7 +246,11 @@ function WalletDialog({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end bg-black/35 px-4 pb-4 sm:items-center sm:justify-center sm:p-6">
+    <div
+      aria-modal="true"
+      className="fixed inset-0 z-50 flex items-end bg-black/35 px-4 pb-4 sm:items-center sm:justify-center sm:p-6"
+      role="dialog"
+    >
       <div className="w-full max-w-md rounded-lg bg-white p-5 shadow-soft">
         <div className="flex items-center justify-between gap-4">
           <div>
