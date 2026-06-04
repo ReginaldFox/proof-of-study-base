@@ -822,6 +822,7 @@ export function StudyApp() {
               onChange={(event) => setLookupAddress(event.target.value)}
             />
             <button
+              aria-label="Search wallet"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-ink px-5 font-semibold text-white disabled:opacity-50"
               disabled={!lookupIsValid || lookupAddress.trim() === '' || !hasContract || isWrongNetwork}
             >
