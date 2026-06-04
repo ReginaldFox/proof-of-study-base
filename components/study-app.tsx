@@ -113,6 +113,7 @@ function normalizeError(error?: Error | null) {
     const shortMessage = error.shortMessage.toLowerCase();
     if (shortMessage.includes('provider not found')) return 'This wallet is not available in the current browser.';
     if (shortMessage.includes('user rejected')) return 'Transaction rejected.';
+    if (shortMessage.includes('switch chain')) return 'Switch to Base and try again.';
     if (shortMessage.includes('already checked in')) return 'This wallet already checked in today.';
     return error.shortMessage;
   }
