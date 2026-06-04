@@ -99,6 +99,10 @@ function transactionUrl(hash: string) {
   return `https://basescan.org/tx/${hash}`;
 }
 
+function contractUrl(address: Address) {
+  return `https://basescan.org/address/${address}`;
+}
+
 function normalizeError(error?: Error | null) {
   if (!error) return '';
   if (error instanceof BaseError) {
@@ -651,6 +655,12 @@ export function StudyApp() {
               <div className="col-span-2 rounded-lg bg-[#fff8ef] p-4">
                 <p className="text-sm text-stone-500">Builder attribution</p>
                 <p className="mt-2 text-sm font-semibold">{baseBuilderCode}</p>
+              </div>
+              <div className="col-span-2 rounded-lg bg-[#fff8ef] p-4">
+                <p className="text-sm text-stone-500">Contract</p>
+                <a className="mt-2 block break-all text-sm font-semibold text-orange-700 underline" href={contractUrl(contractAddress)} rel="noreferrer" target="_blank">
+                  {formatAddress(contractAddress)}
+                </a>
               </div>
             </div>
             {transactionHash && (
