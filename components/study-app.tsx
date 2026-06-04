@@ -521,7 +521,7 @@ export function StudyApp() {
       address: contractAddress,
       abi: proofOfStudyAbi,
       functionName: 'checkIn',
-      dataSuffix: baseBuilderDataSuffix || undefined
+      dataSuffix: baseBuilderDataSuffix
     });
   }
 
