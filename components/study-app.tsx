@@ -586,6 +586,7 @@ export function StudyApp() {
                 {checkInButtonLabel}
               </button>
               <button
+                aria-label="Choose wallet"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-orange-200 bg-white px-4 font-semibold text-stone-700"
                 onClick={() => setIsWalletOpen(true)}
               >
