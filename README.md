@@ -133,3 +133,12 @@ After deployment, copy the deployed contract address into `NEXT_PUBLIC_CONTRACT_
 Push the repository to GitHub.
 
 Import the project into Vercel.
+
+Set the following environment variables in the Vercel project settings:
+
+```bash
+NEXT_PUBLIC_CONTRACT_ADDRESS=0xcfc974d8A75E8bEC5B3184d29ca4973Ee0aBE96f
+NEXT_PUBLIC_CHAIN_ID=8453
+```
+
+Use the following build command:
