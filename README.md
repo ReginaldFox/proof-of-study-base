@@ -142,3 +142,13 @@ NEXT_PUBLIC_CHAIN_ID=8453
 ```
 
 Use the following build command:
+
+```bash
+npm run build
+```
+
+## Contract Summary
+
+The main contract is located at:
+
+```text
