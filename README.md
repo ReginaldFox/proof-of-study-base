@@ -172,3 +172,12 @@ Additional project documentation is available in the `docs` directory:
 
 - `docs/attribution.md`
 - `docs/wallets.md`
+- `docs/deployment.md`
+- `docs/qa-checklist.md`
+- `docs/mobile.md`
+- `docs/base-app.md`
+- `docs/security.md`
+- `docs/contract.md`
+- `docs/product.md`
+
+## Notes
