@@ -85,3 +85,12 @@ Current builder code:
 
 ```text
 bc_28t25gk8
+```
+
+## Run Locally
+
+Install dependencies:
+
+```bash
+npm install
+```
