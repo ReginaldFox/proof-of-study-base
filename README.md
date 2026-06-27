@@ -37,3 +37,11 @@ The current configured contract is deployed on Base Mainnet.
 - Next.js App Router
 - TypeScript
 - Tailwind CSS
+- Wagmi
+- Viem
+- Solidity
+- Hardhat
+
+## Requirements
+
+Install Node.js and npm before running the project locally.
