@@ -161,3 +161,14 @@ contracts/ProofOfStudy.sol
 - Current streak
 - Longest streak
 - Last check-in day
+
+The `checkIn()` function accepts one check-in per UTC day.
+
+When a study check-in succeeds, the contract emits `StudyCheckedIn`.
+
+## Documentation
+
+Additional project documentation is available in the `docs` directory:
+
+- `docs/attribution.md`
+- `docs/wallets.md`
