@@ -114,3 +114,12 @@ npm run build
 ## Deploy the Contract
 
 Set the deployment variables:
+
+```bash
+PRIVATE_KEY=your_deployer_private_key
+BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
+```
+
+Deploy the contract:
+
+```bash
