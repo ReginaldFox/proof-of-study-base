@@ -66,3 +66,11 @@ NEXT_PUBLIC_CHAIN_ID=8453
 `8453` is Base Mainnet.
 
 The address above is the configured ProofOfStudy contract on Base Mainnet.
+
+## Base Attribution Configuration
+
+For Base attribution, add the verified app identifier directly in `app/layout.tsx`:
+
+```tsx
+<meta name="base:app_id" content="..." />
+```
