@@ -123,3 +123,13 @@ BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
 Deploy the contract:
 
 ```bash
+npm run deploy:contract
+```
+
+After deployment, copy the deployed contract address into `NEXT_PUBLIC_CONTRACT_ADDRESS`.
+
+## Deploy the Frontend
+
+Push the repository to GitHub.
+
+Import the project into Vercel.
