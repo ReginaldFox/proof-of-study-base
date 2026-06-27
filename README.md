@@ -27,3 +27,13 @@ The current configured contract is deployed on Base Mainnet.
 - Allows one daily onchain study check-in per wallet.
 - Tracks personal reward stats.
 - Includes wallet lookup.
+- Includes an achievement track.
+- Shows recent activity.
+- Includes Base offchain attribution metadata in `app/layout.tsx`.
+- Includes ERC-8021 onchain attribution data suffix in `lib/wagmi.ts` and the `writeContract` call.
+
+## Tech Stack
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
