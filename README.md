@@ -55,3 +55,14 @@ Copy the example environment file:
 ```bash
 cp .env.example .env.local
 ```
+
+Set the following values in `.env.local`:
+
+```bash
+NEXT_PUBLIC_CONTRACT_ADDRESS=0xcfc974d8A75E8bEC5B3184d29ca4973Ee0aBE96f
+NEXT_PUBLIC_CHAIN_ID=8453
+```
+
+`8453` is Base Mainnet.
+
+The address above is the configured ProofOfStudy contract on Base Mainnet.
