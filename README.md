@@ -152,3 +152,12 @@ npm run build
 The main contract is located at:
 
 ```text
+contracts/ProofOfStudy.sol
+```
+
+`ProofOfStudy.sol` stores each wallet's:
+
+- Total check-ins
+- Current streak
+- Longest streak
+- Last check-in day
