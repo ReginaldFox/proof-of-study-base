@@ -77,3 +77,15 @@ The address above is the configured ProofOfStudy contract on Base Mainnet.
 ## Base Attribution Configuration
 
 For Base attribution, add the verified app identifier directly in `app/layout.tsx`:
+
+```tsx
+<meta name="base:app_id" content="..." />
+```
+
+Add the builder code data suffix in `lib/wagmi.ts`:
+
+```ts
+export const baseBuilderDataSuffix = '0x62635f3238743235676b380b0080218021802180218021802180218021' as Hex;
+```
+
+Current builder code:
