@@ -180,3 +180,16 @@ When a study check-in succeeds, the contract emits `StudyCheckedIn`.
 ## Project Structure
 
 Key files and directories include:
+
+```text
+app/
+contracts/
+docs/
+lib/
+```
+
+The `app` directory contains the Next.js App Router frontend.
+
+The `contracts` directory contains the Solidity contract.
+
+The `lib` directory contains shared client configuration, including Wagmi setup.
