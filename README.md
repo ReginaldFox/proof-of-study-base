@@ -89,3 +89,15 @@ export const baseBuilderDataSuffix = '0x62635f3238743235676b380b0080218021802180
 ```
 
 Current builder code:
+
+```text
+bc_28t25gk8
+```
+
+## Run Locally
+
+Install dependencies:
+
+```bash
+npm install
+```
