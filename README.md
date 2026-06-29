@@ -21,3 +21,14 @@ The experience uses a warm, card-based layout with one clear primary action.
 The currently configured contract is deployed on Base Mainnet.
 
 ## Features
+
+- Mobile-first English interface for the Base App browser.
+- Warm card-based layout built around a single daily reward action.
+- Wallet connection using a native Wagmi configuration.
+- Support for injected wallets.
+- Support for Coinbase Wallet.
+- Support for the Base App injected wallet.
+- Support for MetaMask, OKX Wallet, and other injected EIP-1193 wallets.
+- No WalletConnect dependency.
+- No RainbowKit dependency.
+- One daily onchain study check-in per wallet.
