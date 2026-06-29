@@ -147,3 +147,13 @@ Set the following environment variables in the Vercel project settings:
 
 ```bash
 NEXT_PUBLIC_CONTRACT_ADDRESS=0xcfc974d8A75E8bEC5B3184d29ca4973Ee0aBE96f
+NEXT_PUBLIC_CHAIN_ID=8453
+```
+
+Use the following build command:
+
+```bash
+npm run build
+```
+
+Deploy the project after the environment values have been saved.
