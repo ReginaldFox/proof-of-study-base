@@ -111,3 +111,16 @@ npm run dev
 Open the local development URL shown in your terminal.
 
 ## Build
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+## Deploy the Contract
+
+Set the deployment variables:
+
+```bash
+PRIVATE_KEY=your_deployer_private_key
