@@ -193,3 +193,14 @@ The `app` directory contains the Next.js App Router frontend.
 The `contracts` directory contains the Solidity contract.
 
 The `lib` directory contains shared client configuration, including Wagmi setup.
+
+The `docs` directory contains supporting documentation for deployment, product behavior, wallets, security, and Base App usage.
+
+## Documentation
+
+Additional project documentation is available in the `docs` directory:
+
+- `docs/attribution.md`
+- `docs/wallets.md`
+- `docs/deployment.md`
+- `docs/qa-checklist.md`
