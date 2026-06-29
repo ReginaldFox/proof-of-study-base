@@ -215,3 +215,15 @@ Additional project documentation is available in the `docs` directory:
 The app is intended to keep the learning action simple and easy to complete from a mobile device.
 
 Daily check-ins are based on UTC days.
+
+Only one check-in is accepted per wallet per UTC day.
+
+The frontend chain ID and contract address must match the deployed contract network.
+
+When changing contract deployments, update `NEXT_PUBLIC_CONTRACT_ADDRESS` before rebuilding the frontend.
+
+If the chain ID changes, update `NEXT_PUBLIC_CHAIN_ID` at the same time.
+
+## License
+
+No license information is included in the provided project details.
