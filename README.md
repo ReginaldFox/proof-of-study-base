@@ -157,3 +157,16 @@ npm run build
 ```
 
 Deploy the project after the environment values have been saved.
+
+## Contract Summary
+
+The main contract is located at:
+
+```text
+contracts/ProofOfStudy.sol
+```
+
+`ProofOfStudy.sol` stores each wallet's learning progress, including:
+
+- Total check-ins
+- Current streak
