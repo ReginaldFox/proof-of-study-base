@@ -54,3 +54,16 @@ The currently configured contract is deployed on Base Mainnet.
 Install Node.js and npm before running the project locally.
 
 Access to the configured Base network RPC endpoints is required when deploying contracts.
+
+## Environment Configuration
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+Set the following values in `.env.local`:
+
+```bash
+NEXT_PUBLIC_CONTRACT_ADDRESS=0xcfc974d8A75E8bEC5B3184d29ca4973Ee0aBE96f
