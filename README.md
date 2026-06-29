@@ -32,3 +32,15 @@ The currently configured contract is deployed on Base Mainnet.
 - No WalletConnect dependency.
 - No RainbowKit dependency.
 - One daily onchain study check-in per wallet.
+- Personal reward statistics.
+- Wallet lookup.
+- Achievement progress tracking.
+- Recent activity display.
+- Base offchain attribution metadata in `app/layout.tsx`.
+- ERC-8021 onchain attribution data suffix in `lib/wagmi.ts` and the `writeContract` call.
+
+## Tech Stack
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
